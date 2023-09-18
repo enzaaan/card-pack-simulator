@@ -169,16 +169,99 @@ document.getElementById("openPackButton").addEventListener("click", function () 
 // }
 
 // 結果を表示する関数
+// function displayResults(results) {
+//   const resultsDiv = document.getElementById("results");
+//   resultsDiv.innerHTML = "";
+
+//   results.forEach((pack, index) => {
+//     const packDiv = document.createElement("div");
+//     packDiv.innerHTML = `<h2>Pack ${index + 1}</h2>`;
+//     pack.forEach((card) => {
+//       const cardDiv = document.createElement("div");
+//       cardDiv.className = `card ${card.rarity}`;  // レアリティに基づいたクラス名を追加
+//       cardDiv.innerHTML = `
+//         <h3>${card.name}</h3>
+//         <p>Rarity: ${card.rarity}</p>
+//         <p>Rank: ${card.rank}</p>
+//       `;
+//       packDiv.appendChild(cardDiv);
+//     });
+//     resultsDiv.appendChild(packDiv);
+//   });
+// }
+
+
+
+// 結果を表示する関数
+// function displayResults(results) {
+//   const resultsDiv = document.getElementById("results");
+//   resultsDiv.innerHTML = "";
+
+//   // レアリティごとのカウントを保存するオブジェクト
+//   const rarityCount = { N: 0, R: 0, SR: 0, LR: 0 };
+
+//   results.forEach((pack, index) => {
+//     const packDiv = document.createElement("div");
+//     packDiv.innerHTML = `<h2>Pack ${index + 1}</h2>`;
+//     pack.forEach((card) => {
+//       // レアリティカウントを更新
+//       rarityCount[card.rarity]++;
+
+//       const cardDiv = document.createElement("div");
+//       cardDiv.className = `card ${card.rarity}`;
+//       cardDiv.innerHTML = `
+//         <h3>${card.name}</h3>
+//         <p>Rarity: ${card.rarity}</p>
+//         <p>Rank: ${card.rank}</p>
+//       `;
+//       packDiv.appendChild(cardDiv);
+//     });
+//     resultsDiv.appendChild(packDiv);
+//   });
+
+//   // レアリティごとのカウントをテーブルで表示
+//   const table = document.createElement("table");
+//   table.innerHTML = `
+//     <tr>
+//       <th>Rarity</th>
+//       <th>Count</th>
+//     </tr>
+//   `;
+//   for (const [rarity, count] of Object.entries(rarityCount)) {
+//     const row = document.createElement("tr");
+//     row.innerHTML = `<td>${rarity}</td><td>${count}</td>`;
+//     table.appendChild(row);
+//   }
+//   resultsDiv.appendChild(table);
+// }
+
+
+// 結果を表示する関数
 function displayResults(results) {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "";
+
+  // レアリティごとのカウントを保存するオブジェクト
+  const rarityCount = { N: 0, R: 0, SR: 0, LR: 0 };
+
+  // レアリティごとのカウントをテーブルで表示（初期化）
+  const table = document.createElement("table");
+  table.innerHTML = `
+    <tr>
+      <th>Rarity</th>
+      <th>Count</th>
+    </tr>
+  `;
 
   results.forEach((pack, index) => {
     const packDiv = document.createElement("div");
     packDiv.innerHTML = `<h2>Pack ${index + 1}</h2>`;
     pack.forEach((card) => {
+      // レアリティカウントを更新
+      rarityCount[card.rarity]++;
+
       const cardDiv = document.createElement("div");
-      cardDiv.className = `card ${card.rarity}`;  // レアリティに基づいたクラス名を追加
+      cardDiv.className = `card ${card.rarity}`;
       cardDiv.innerHTML = `
         <h3>${card.name}</h3>
         <p>Rarity: ${card.rarity}</p>
@@ -188,12 +271,16 @@ function displayResults(results) {
     });
     resultsDiv.appendChild(packDiv);
   });
+
+  // レアリティごとのカウントをテーブルで更新
+  for (const [rarity, count] of Object.entries(rarityCount)) {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${rarity}</td><td>${count}</td>`;
+    table.appendChild(row);
+  }
+  // テーブルをパックの上に挿入
+  resultsDiv.insertBefore(table, resultsDiv.firstChild);
 }
-
-
-
-
-
 
 
 
