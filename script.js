@@ -87,11 +87,14 @@ const cards = [
     { name: "Card2", rarity: "LR", rank: 4 },
     { name: "Card2", rarity: "LR", rank: 4 },
   ];
+  
 
 
 // パックを開封する関数
 function openPack(numPacks) {
   let results = [];
+  let lrCount = 0;
+  let srCount = 0;
 
   for (let i = 0; i < numPacks; i++) {
     let pack = [];
@@ -101,15 +104,30 @@ function openPack(numPacks) {
     // ランク0のカードを2枚追加
     for (let j = 0; j < 2; j++) {
       let randomIndex = Math.floor(Math.random() * rank0Cards.length);
-      let card = rank0Cards.splice(randomIndex, 1)[0];  // 選んだカードを配列から削除
+      let card = rank0Cards.splice(randomIndex, 1)[0];
       pack.push(card);
     }
 
     // 残りのカードを3枚追加
     for (let j = 0; j < 3; j++) {
       let randomIndex = Math.floor(Math.random() * otherCards.length);
-      let card = otherCards.splice(randomIndex, 1)[0];  // 選んだカードを配列から削除
+      let card = otherCards.splice(randomIndex, 1)[0];
       pack.push(card);
+    }
+
+    // LRとSRの封入率を調整
+    if (lrCount < 1 && Math.random() < 1 / 30) {
+      let lrCard = cards.find(card => card.rarity === "LR");
+      if (lrCard) {
+        pack[2] = lrCard;
+        lrCount++;
+      }
+    } else if (srCount < 8 && Math.random() < 8 / 30) {
+      let srCard = cards.find(card => card.rarity === "SR");
+      if (srCard) {
+        pack[2] = srCard;
+        srCount++;
+      }
     }
 
     results.push(pack);
@@ -128,6 +146,28 @@ document.getElementById("openPackButton").addEventListener("click", function () 
   displayResults(results);
 });
 
+// // 結果を表示する関数
+// function displayResults(results) {
+//   const resultsDiv = document.getElementById("results");
+//   resultsDiv.innerHTML = "";
+
+//   results.forEach((pack, index) => {
+//     const packDiv = document.createElement("div");
+//     packDiv.innerHTML = `<h2>Pack ${index + 1}</h2>`;
+//     pack.forEach((card) => {
+//       const cardDiv = document.createElement("div");
+//       cardDiv.className = "card";
+//       cardDiv.innerHTML = `
+//         <h3>${card.name}</h3>
+//         <p>Rarity: ${card.rarity}</p>
+//         <p>Rank: ${card.rank}</p>
+//       `;
+//       packDiv.appendChild(cardDiv);
+//     });
+//     resultsDiv.appendChild(packDiv);
+//   });
+// }
+
 // 結果を表示する関数
 function displayResults(results) {
   const resultsDiv = document.getElementById("results");
@@ -138,7 +178,7 @@ function displayResults(results) {
     packDiv.innerHTML = `<h2>Pack ${index + 1}</h2>`;
     pack.forEach((card) => {
       const cardDiv = document.createElement("div");
-      cardDiv.className = "card";
+      cardDiv.className = `card ${card.rarity}`;  // レアリティに基づいたクラス名を追加
       cardDiv.innerHTML = `
         <h3>${card.name}</h3>
         <p>Rarity: ${card.rarity}</p>
@@ -149,7 +189,6 @@ function displayResults(results) {
     resultsDiv.appendChild(packDiv);
   });
 }
-
 
 
 

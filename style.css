@@ -21,7 +21,7 @@ body {
     padding: 10px;
     margin: 5px;
     display: inline-block;
-    width: 150px;
+    width: 100px;
   }
   
   .card h3 {
@@ -31,5 +31,21 @@ body {
   
   .card p {
     margin: 5px 0;
+  }
+  
+  .card.N {
+    background-color: #f1f1f1; /* ノーマル */
+  }
+  
+  .card.R {
+    background-color: #add8e6; /* レア */
+  }
+  
+  .card.SR {
+    background-color: #90ee90; /* スーパーレア */
+  }
+  
+  .card.LR {
+    background-color: #ffb6c1; /* レジェンドレア */
   }
   
